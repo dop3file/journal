@@ -1,0 +1,142 @@
+{% load static %}
+{% include 'base.html' %}
+<body>
+  <script src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.js"></script>
+  <script src="extensions/editable/bootstrap-table-editable.js"></script>
+    {% include 'header.html' %}
+    <main>
+        <div class="container">
+            <h1>{{ user.last_name }} {{ user.first_name }}, {{ user.group.title }}</h1>
+            <h2>{{ course }} курс</h2>
+            <h2>{{ age }} лет</h2>
+        </div>
+        <div class="container">
+            <div class="container table_ground">
+                <h2>Антпропометрические данные</h2>
+                <table class="table table-dark w-75">
+                  <thead>
+                    <tr>
+                      <th scope="col">Показатель</th>
+                      <th scope="col">1 сем</th>
+                      <th scope="col">2 сем</th>
+                      <th scope="col">3 сем</th>
+                      <th scope="col">4 сем</th>
+                      <th scope="col">5 сем</th>
+                      <th scope="col">6 сем</th>
+                      <th scope="col">7 сем</th>
+                      <th scope="col">8 сем</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="col">Рост</th>
+                      <th scope="col"><div contenteditable id="height_1">{% if 1.height %}{{ 1.height }}{% else %}{%endif%}</div></th>
+                      <th scope="col">{% if 2.height %}{{ 2.height }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 3.height %}{{ 3.height }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 4.height %}{{ 4.height }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 5.height %}{{ 5.height }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 6.height %}{{ 6.height }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 7.height %}{{ 7.height }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 8.height %}{{ 8.height }}{% else %} {%endif%}</th>
+                    </tr>
+                    <tr>
+                      <th scope="col">Вес</th>
+                      <th scope="col">{% if 1.weight %}{{ 1.weight }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 2.weight %}{{ 2.weight }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 3.weight %}{{ 3.weight }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 4.weight %}{{ 4.weight }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 5.weight %}{{ 5.weight }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 6.weight %}{{ 6.weight }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 7.weight %}{{ 7.weight }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 8.weight %}{{ 8.weight }}{% else %} {%endif%}</th>
+                    </tr>
+                    <tr>
+                      <th scope="col">ЖЕЛ</th>
+                      <th scope="col">{% if 1.vital_capacity %}{{ 1.vital_capacity }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 2.vital_capacity %}{{ 2.vital_capacity }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 3.vital_capacity %}{{ 3.vital_capacity }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 4.vital_capacity %}{{ 4.vital_capacity }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 5.vital_capacity %}{{ 5.vital_capacity }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 6.vital_capacity %}{{ 6.vital_capacity }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 7.vital_capacity %}{{ 7.vital_capacity }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 8.vital_capacity %}{{ 8.vital_capacity }}{% else %} {%endif%}</th>
+                    </tr>
+                    <tr>
+                      <th scope="col">Становая сила</th>
+                      <th scope="col">{% if 1.strength %}{{ 1.strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 2.strength %}{{ 2.strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 3.strength %}{{ 3.strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 4.strength %}{{ 4.strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 5.strength %}{{ 5.strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 6.strength %}{{ 6.strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 7.strength %}{{ 7.strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 8.strength %}{{ 8.strength }}{% else %} {%endif%}</th>
+                    </tr>
+                    <tr>
+                      <th scope="col">Сила правой кисти</th>
+                      <th scope="col">{% if 1.right_hand_strength %}{{ 1.right_hand_strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 2.right_hand_strength %}{{ 2.right_hand_strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 3.right_hand_strength %}{{ 3.right_hand_strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 4.right_hand_strength %}{{ 4.right_hand_strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 5.right_hand_strength %}{{ 5.right_hand_strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 6.right_hand_strength %}{{ 6.right_hand_strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 7.right_hand_strength %}{{ 7.right_hand_strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 8.right_hand_strength %}{{ 8.right_hand_strength }}{% else %} {%endif%}</th>
+                    </tr>
+                    <tr>
+                      <th scope="col">Сила левой кисти</th>
+                      <th scope="col">{% if 1.left_hand_strength %}{{ 1.left_hand_strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 2.left_hand_strength %}{{ 2.left_hand_strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 3.left_hand_strength %}{{ 3.left_hand_strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 4.left_hand_strength %}{{ 4.left_hand_strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 5.left_hand_strength %}{{ 5.left_hand_strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 6.left_hand_strength %}{{ 6.left_hand_strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 7.left_hand_strength %}{{ 7.left_hand_strength }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 8.left_hand_strength %}{{ 8.left_hand_strength }}{% else %} {%endif%}</th>
+                    </tr>
+                    <tr>
+                      <th scope="col">ЧСС</th>
+                      <th scope="col">{% if 1.chs %}{{ 1.chs }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 2.chs %}{{ 2.chs }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 3.chs %}{{ 3.chs }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 4.chs %}{{ 4.chs }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 5.chs %}{{ 5.chs }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 6.chs %}{{ 6.chs }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 7.chs %}{{ 7.chs }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 8.chs %}{{ 8.chs }}{% else %} {%endif%}</th>
+                    </tr>
+                    <tr>
+                      <th scope="col">АДС</th>
+                      <th scope="col">{% if 1.ads %}{{ 1.ads }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 2.ads %}{{ 2.ads }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 3.ads %}{{ 3.ads }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 4.ads %}{{ 4.ads }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 5.ads %}{{ 5.ads }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 6.ads %}{{ 6.ads }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 7.ads %}{{ 7.ads }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 8.ads %}{{ 8.ads }}{% else %} {%endif%}</th>
+                    </tr>
+                    <tr>
+                      <th scope="col">АДД</th>
+                      <th scope="col">{% if 1.add %}{{ 1.add }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 2.add %}{{ 2.add }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 3.add %}{{ 3.add }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 4.add %}{{ 4.add }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 5.add %}{{ 5.add }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 6.add %}{{ 6.add }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 7.add %}{{ 7.add }}{% else %} {%endif%}</th>
+                      <th scope="col">{% if 8.add %}{{ 8.add }}{% else %} {%endif%}</th>
+                    </tr>
+                  </tbody>
+                </table>
+                {% if is_own %}
+                  <button type="button" class="btn btn-success" onclick="">Сохранить</button>
+                {% else %}
+                {% endif %}
+            </div>
+            </div>
+
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,15 @@
+#logo {
+    width: 115px;
+    height: 85px;
+}
+
+
+.custom_btn {
+    margin-left: 3em;
+}
+
+.table_ground {
+    background-color: #FBEEC1;
+    border-radius: 2em;
+    padding: 2em;
+}

@@ -1,0 +1,16 @@
+{% load static %}
+{% include 'base.html' %}
+<body>
+    {% include 'header.html' %}
+    <main>
+        <div class="container w-25">
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <br>
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
