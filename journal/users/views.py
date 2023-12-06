@@ -5,7 +5,7 @@ from django.views import View
 from django.views.generic import TemplateView
 
 from .forms import RegisterForm, LoginForm
-from .controllers import generate_anthropometric
+from .controllers import generate_physical_tables
 
 
 class MainView(TemplateView, View):
@@ -14,6 +14,7 @@ class MainView(TemplateView, View):
     def get(self, request: HttpRequest, *args, **kwargs):
         return self.render_to_response({
             "user": request.user,
+            "semesters_range": range(1, 9),
             "title": "Journal"
         })
 
@@ -32,7 +33,7 @@ class RegisterView(TemplateView, View):
         form = RegisterForm(data=request.POST)
         if form.is_valid():
             user = form.save()
-            generate_anthropometric(user)
+            generate_physical_tables(user)
             login(request, user)
             return redirect("main")
         else:
@@ -50,7 +51,7 @@ class LoginView(TemplateView, View):
         })
 
     def post(self, request, *args, **kwargs):
-        user = authenticate(username=request.POST.get("username"),
+        user = authenticate(username=request.POST.get("email"),
                             password=request.POST.get("password"))
         if user is not None:
             if user.is_active:

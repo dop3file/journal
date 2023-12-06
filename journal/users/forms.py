@@ -7,11 +7,6 @@ import datetime
 
 
 class RegisterForm(UserCreationForm):
-    username = forms.CharField(
-        label='Никнейм',
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя пользователя'})
-    )
-
     first_name = forms.CharField(
         label='Имя',
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя'})
@@ -50,6 +45,12 @@ class RegisterForm(UserCreationForm):
         required=True
     )
 
+    gender = forms.ChoiceField(
+        label="Пол",
+        choices=[("male", "Мужской"), ("wooman", "Женский")],
+        widget=forms.Select(attrs={'class': 'form-control', 'placeholder': 'Пол'})
+    )
+
     birth_year = forms.IntegerField(
         label="Год рождения",
         widget=forms.DateTimeInput(attrs={'class': 'form-control', 'placeholder': 'Год рождения'})
@@ -57,29 +58,28 @@ class RegisterForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super(RegisterForm, self).save(commit=False)
-        first_name = self.cleaned_data["first_name"]
-        last_name = self.cleaned_data["last_name"]
-        user.first_name = first_name
-        user.last_name = last_name
-        user.group = self.cleaned_data["group"]
-        user.email = self.cleaned_data["email"]
-        user.join_year = int(self.cleaned_data["join_year"])
-        user.birth_year = int(self.cleaned_data["birth_year"])
+        fields = CustomUser._meta.fields
+        for field in fields:
+            try:
+                setattr(user, field.name, self.cleaned_data[field.name])
+            except KeyError:
+                ...
+        user.username = user.email
         if commit:
             user.save()
         return user
 
     class Meta:
-        fields = ("first_name", "last_name", "username", "password1", "password2", "email")
+        fields = ("first_name", "last_name", "password1", "password2", "email")
         model = CustomUser
 
 
 class LoginForm(ModelForm):
     class Meta:
         model = CustomUser
-        fields = ("username", "password")
+        fields = ("email", "password")
         widgets = {
-            "username": TextInput({'class': 'form-control', 'placeholder': 'Никнейм'}),
+            "email": TextInput({'class': 'form-control', 'placeholder': 'Email'}),
             "password": PasswordInput({'class': 'form-control', 'type': 'password', 'placeholder': 'Пароль'})
         }
 

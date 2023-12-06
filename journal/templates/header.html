@@ -4,14 +4,17 @@
             <img src="https://www.edu.gstu.by/pluginfile.php/1/theme_eguru/logo/1690896221/gomel_new_logo.png" alt="" id="logo">
         </a>
         {% if user.is_authenticated %}
-            <div class="col-md-3 text-end">
-                <button type="button" class="btn btn-primary custom_btn"><a href="{% url 'profile' username=user.username %}" style="color: white; text-decoration: unset;">{{ user.username }}</a></button>
-                <button type="button" class="btn btn-danger"><a href="{% url 'logout' %}" style="color: white; text-decoration: unset;">Выйти</a></button>
+            <div class="col-md-5 text-end">
+                {% if user.is_superuser %}
+                    <a href="{% url 'admin' %}" style="color: white; text-decoration: unset;">{<button type="button" class="btn btn-success">Админ панель</button></a>
+                {% endif %}
+                <a href="{% url 'profile' pk=user.id %}" style="color: white; text-decoration: unset;">{<button type="button" class="btn btn-primary">Профиль</button></a>
+                <a href="{% url 'logout' %}" style="color: white; text-decoration: unset;"><button type="button" class="btn btn-danger">Выйти</button></a>
             </div>
         {% else %}
             <div class="col-md-3 text-end">
-                <button type="button" class="btn btn-outline-primary me-2"><a href="{% url 'login' %}" style="color: blue; text-decoration: unset;">Войти</a></button>
-                <button type="button" class="btn btn-primary"><a href="{% url 'register' %}" style="color: white; text-decoration: unset;">Регистрация</a></button>
+                <a href="{% url 'login' %}" style="color: blue; text-decoration: unset;"><button type="button" class="btn btn-outline-primary me-2">Войти</button></a>
+                <a href="{% url 'register' %}" style="color: white; text-decoration: unset;"><button type="button" class="btn btn-primary">Регистрация</button></a>
             </div>
         {% endif %}
 

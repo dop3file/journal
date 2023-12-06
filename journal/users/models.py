@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -17,6 +18,24 @@ class CustomUser(AbstractUser):
     group = models.ForeignKey(StudentGroup, on_delete=models.CASCADE)
     birth_year = models.IntegerField()
     join_year = models.IntegerField()
+    email = models.EmailField(unique=True)
+    gender = models.CharField(default="male")
 
     def __str__(self):
-        return "User(<{}>)".format(self.username)
+        return f"{self.last_name} {self.first_name}"
+
+    def get_age_caption(self) -> str:
+        age_token = lambda age_to: (
+                (age_to in range(5, 20)) and 'лет' or
+                (1 in (age_to, (diglast := age_to % 10))) and 'год' or
+                ({age_to, diglast} & {2, 3, 4}) and 'года' or 'лет')
+        age = datetime.datetime.now().year - self.birth_year
+        return f"{age} {age_token(age)}"
+
+    def get_age(self) -> int:
+        age = datetime.datetime.now().year - self.birth_year
+        return age
+
+    def get_course(self) -> int:
+        return datetime.datetime.now().year - self.join_year + 1
+
