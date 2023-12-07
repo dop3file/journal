@@ -6,7 +6,7 @@
         {% if user.is_authenticated %}
             <div class="col-md-5 text-end">
                 {% if user.is_superuser %}
-                    <a href="{% url 'admin' %}" style="color: white; text-decoration: unset;">{<button type="button" class="btn btn-success">Админ панель</button></a>
+                    <a href="{% url 'panel' %}" style="color: white; text-decoration: unset;">{<button type="button" class="btn btn-success">Админ панель</button></a>
                 {% endif %}
                 <a href="{% url 'profile' pk=user.id %}" style="color: white; text-decoration: unset;">{<button type="button" class="btn btn-primary">Профиль</button></a>
                 <a href="{% url 'logout' %}" style="color: white; text-decoration: unset;"><button type="button" class="btn btn-danger">Выйти</button></a>

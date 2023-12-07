@@ -19,17 +19,17 @@ from django.urls import path
 
 from users.views import MainView, RegisterView, LoginView, _logout
 from profiles.views import ProfileView, FunctionalTableView, EditProfileView
-from admin.views import AdminPanelView
+from admin_panel.views import AdminPanelView
 
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
     path('', MainView.as_view(), name="main"),
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),
     path('profile/<int:pk>/', ProfileView.as_view(), name='profile'),
     path('logout/', _logout, name='logout'),
-    path('admin/', AdminPanelView.as_view(), name='admin'),
+    path('panel/', AdminPanelView.as_view(), name='panel'),
     path('functional_table/', FunctionalTableView.as_view(), name='functional'),
     path('edit_profile/', EditProfileView.as_view(), name='edit_profile')
 ]

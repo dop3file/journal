@@ -3,9 +3,10 @@ from copy import deepcopy
 from typing import Type, Tuple
 
 from django.db.models import Model
+from django.http import HttpRequest
 
 from journal import settings
-from .models import Anthropometric
+from .models import Anthropometric, Functional
 from users.models import CustomUser
 
 
@@ -99,3 +100,28 @@ class AnthropometricTableControllers(PhysicalTableControllers):
 class FunctionalTableControllers(PhysicalTableControllers):
     def __init__(self, table_class: Type[Model], not_exists_fields: Tuple[str]):
         super().__init__(table_class, not_exists_fields)
+
+
+class ProfileControllers:
+    def __init__(self, anthropometric_table_controllers: AnthropometricTableControllers, functional_table_controllers: FunctionalTableControllers):
+        self.anthropometric_table_controllers = anthropometric_table_controllers
+        self.functional_table_controllers = functional_table_controllers
+
+
+    def get_profile_context(self, user: CustomUser, request: HttpRequest) -> dict:
+        context = {
+            "is_own": user.id == request.user.id,
+            "profile_user": user,
+            "course": user.get_course(),
+            "age": user.get_age_caption(),
+            "count": range(1, 9),
+            "user": request.user,
+            "title": f"{user.last_name} {user.first_name}",
+            "gender": "Мужской" if user.gender == "male" else "Женский"
+        }
+        antropometric_data = self.anthropometric_table_controllers.get_table(user)
+        context.update(antropometric_data)
+        context.update(self.anthropometric_table_controllers.calculate_indexes_physical_development(antropometric_data, user.get_age()))
+        functional_data = self.functional_table_controllers.get_table(user)
+        context.update(functional_data)
+        return context

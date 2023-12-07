@@ -1,20 +1,22 @@
 import json
-import logging
-import datetime
 
 from django.http import HttpRequest
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.views import View
 from django.views.generic import TemplateView
-from django.views.decorators.csrf import csrf_exempt
 
-from .services import UserService
-from .controllers import AnthropometricTableControllers, FunctionalTableControllers
+from .forms import EditProfileForm
+from users.services import UserService
+from .controllers import AnthropometricTableControllers, FunctionalTableControllers, ProfileControllers
 from .models import Anthropometric, Functional
 
 
 anthropometric_table_controllers = AnthropometricTableControllers(Anthropometric, ("user", "semester", "id"))
 functional_table_controllers = FunctionalTableControllers(Functional, ("user", "semester", "id"))
+profile_controllers = ProfileControllers(
+    anthropometric_table_controllers,
+    functional_table_controllers
+)
 
 
 class ProfileView(TemplateView, View):
@@ -22,21 +24,7 @@ class ProfileView(TemplateView, View):
 
     def get(self, request: HttpRequest, *args, **kwargs):
         profile_user = UserService.get(kwargs["pk"])
-        context = {
-            "is_own": request.user.id == profile_user.id,
-            "profile_user": profile_user,
-            "course": profile_user.get_course(),
-            "age": profile_user.get_age_caption(),
-            "count": range(1, 9),
-            "user": request.user,
-            "title": f"{profile_user.last_name} {profile_user.first_name}",
-            "gender": "Мужской" if profile_user.gender == "male" else "Женский"
-        }
-        antropometric_data = anthropometric_table_controllers.get_table(profile_user)
-        context.update(antropometric_data)
-        context.update(anthropometric_table_controllers.calculate_indexes_physical_development(antropometric_data, profile_user.get_age()))
-        functional_data = functional_table_controllers.get_table(profile_user)
-        context.update(functional_data)
+        context = profile_controllers.get_profile_context(profile_user, request)
         return self.render_to_response(context)
 
     def post(self, request: HttpRequest, *args, **kwargs):
@@ -52,8 +40,18 @@ class FunctionalTableView(View):
 
 class EditProfileView(TemplateView, View):
     template_name = "edit_profile.html"
+
     def get(self, request: HttpRequest, *args, **kwargs):
-        return self.render_to_response({})
+        form = EditProfileForm()
+        return self.render_to_response({
+            "form": form
+        })
+
+    def post(self, request: HttpRequest, *args, **kwargs):
+        group_id = request.POST.get("group")
+        if group_id:
+            UserService.edit_group(request.user.id, group_id)
+        return redirect("profile", pk=request.user.id)
 
 
 
