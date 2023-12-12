@@ -2,6 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.forms import ModelForm, EmailInput, PasswordInput, TextInput
 
+from .controllers import generate_physical_tables
 from .models import CustomUser, StudentGroup
 import datetime
 
@@ -65,6 +66,7 @@ class RegisterForm(UserCreationForm):
             except KeyError:
                 ...
         user.username = user.email
+        generate_physical_tables(user)
         if commit:
             user.save()
         return user

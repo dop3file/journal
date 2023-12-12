@@ -7,15 +7,18 @@ from django.views.generic import TemplateView
 
 from .forms import EditProfileForm
 from users.services import UserService
-from .controllers import AnthropometricTableControllers, FunctionalTableControllers, ProfileControllers
-from .models import Anthropometric, Functional
+from .controllers import AnthropometricTableControllers, FunctionalTableControllers, ProfileControllers, \
+    PhysicalStandardsControllers
+from .models import Anthropometric, Functional, PhysicalStandards
 
 
 anthropometric_table_controllers = AnthropometricTableControllers(Anthropometric, ("user", "semester", "id"))
 functional_table_controllers = FunctionalTableControllers(Functional, ("user", "semester", "id"))
+physicals_standards = PhysicalStandardsControllers(PhysicalStandards, ("user", "semester", "id"))
 profile_controllers = ProfileControllers(
     anthropometric_table_controllers,
-    functional_table_controllers
+    functional_table_controllers,
+    physicals_standards
 )
 
 
@@ -35,6 +38,12 @@ class ProfileView(TemplateView, View):
 class FunctionalTableView(View):
     def post(self, request: HttpRequest, *args, **kwargs):
         functional_table_controllers.update_table(json.loads(request.body), request.user)
+        return redirect("profile", pk=request.user.id)
+
+
+class PhysicalStandartsTable(View):
+    def post(self, request: HttpRequest, *args, **kwargs):
+        physicals_standards.update_table(json.loads(request.body), request.user)
         return redirect("profile", pk=request.user.id)
 
 

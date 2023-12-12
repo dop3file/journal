@@ -64,7 +64,112 @@ function edit_functional_table(id) {
     location.reload(true);
 }
 
+function edit_physicals(id) {
+    console.log(1)
+    data = {
+        run: [],
+        incline: [],
+        bending: [],
+        raising: [],
+        pull_up: [],
+        squat: []
+    }
+    for (let i = 1; i < 9; i++) {
+        data.run.push(document.getElementById(`run_${i}`).innerText)
+        data.incline.push(document.getElementById(`incline_${i}`).innerText)
+        data.bending.push(document.getElementById(`bending_${i}`).innerText)
+        data.raising.push(document.getElementById(`raising_${i}`).innerText)
+        data.pull_up.push(document.getElementById(`pull_up_${i}`).innerText)
+        data.squat.push(document.getElementById(`squat_${i}`).innerText)
+    }
+     fetch(`http://127.0.0.1:8000/physicals_table/`, {
+          method: "POST",
+          body: JSON.stringify({
+            data
+         }),
+         headers: {
+              "X-CSRFToken": getCookie("csrftoken")
+         }
+     })
+    location.reload(true);
+}
+
 function colorize_functional_table() {
+    for (let i = 1; i < 9; i++) {
+        if (document.getElementById(`genchi_${i}`).innerText) {
+            element = document.getElementById(`genchi_${i}`)
+            amount = Number(element.innerText)
+
+            if (amount >= 40 && amount <= 60) {
+                element.style.backgroundColor = "green"
+            }
+            if (amount >= 25 && amount <= 39) {
+                element.style.backgroundColor = "darkorange"
+            }
+            if (amount >= 20 && amount <= 24) {
+                element.style.backgroundColor = "orangered"
+            }
+            if (amount <= 20) {
+                element.style.backgroundColor = "red"
+            }
+        }
+        else if (document.getElementById(`shtange_${i}`).innerText) {
+            element = document.getElementById(`shtange_${i}`)
+            amount = Number(element.innerText)
+
+            if (amount >= 59 && amount <= 90) {
+                element.style.backgroundColor = "green"
+            }
+            if (amount >= 40 && amount <= 55) {
+                element.style.backgroundColor = "darkorange"
+            }
+            if (amount >= 30 && amount <= 39) {
+                element.style.backgroundColor = "orangered"
+            }
+            if (amount < 30) {
+                element.style.backgroundColor = "red"
+            }
+        }
+        else if (document.getElementById(`functional_ccc_${i}`).innerText) {
+            element = document.getElementById(`functional_ccc_${i}`)
+            amount = Number(element.innerText)
+
+            if (amount < 20) {
+                element.style.backgroundColor = "green"
+            }
+            if (amount >= 21 && element <= 40) {
+                element.style.backgroundColor = "darkorange"
+            }
+            if (amount >= 41 && amount <= 65) {
+                element.style.backgroundColor = "orangered"
+            }
+            if (amount >= 66 && amount <= 75) {
+                element.style.backgroundColor = "red"
+            }
+        }
+        else if (document.getElementById(`orthostatic_${i}`).innerText) {
+            element = document.getElementById(`orthostatic_${i}`)
+            amount = Number(element.innerText)
+
+            if (amount < 10) {
+                element.style.backgroundColor = "green"
+            }
+            if (amount >= 11 && element <= 16) {
+                element.style.backgroundColor = "darkorange"
+            }
+            if (amount >= 17 && amount <= 22) {
+                element.style.backgroundColor = "orangered"
+            }
+            if (amount >= -2 && amount <= -5) {
+                element.style.backgroundColor = "red"
+            }
+        }
+    }
+
+}
+
+
+function colorize_index_table() {
     for (let i = 1; i < 9; i++) {
         if (document.getElementById(`genchi_${i}`).innerText) {
             element = document.getElementById(`genchi_${i}`)

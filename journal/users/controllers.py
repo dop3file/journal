@@ -1,4 +1,4 @@
-from profiles.models import Anthropometric, Functional
+from profiles.models import Anthropometric, Functional, PhysicalStandards
 from .models import CustomUser
 
 
@@ -8,3 +8,5 @@ def generate_physical_tables(user: CustomUser) -> None:
         anthropometric_record.save()
         functional_record = Functional(user=user, semester=semester)
         functional_record.save()
+        physical_record = PhysicalStandards(user=user, semester=semester)
+        physical_record.save()

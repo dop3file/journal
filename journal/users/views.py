@@ -14,7 +14,6 @@ class MainView(TemplateView, View):
     def get(self, request: HttpRequest, *args, **kwargs):
         return self.render_to_response({
             "user": request.user,
-            "semesters_range": range(1, 9),
             "title": "Journal"
         })
 
@@ -33,7 +32,6 @@ class RegisterView(TemplateView, View):
         form = RegisterForm(data=request.POST)
         if form.is_valid():
             user = form.save()
-            generate_physical_tables(user)
             login(request, user)
             return redirect("main")
         else:

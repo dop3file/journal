@@ -27,3 +27,14 @@ class Functional(models.Model):
     functional_ccc = models.FloatField(blank=True, null=True)
     orthostatic = models.FloatField(blank=True, null=True)
 
+
+class PhysicalStandards(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    semester = models.IntegerField(blank=True, null=True)
+    run = models.FloatField(blank=True, null=True)
+    incline = models.FloatField(blank=True, null=True)
+    bending = models.FloatField(blank=True, null=True)
+    raising = models.FloatField(blank=True, null=True)
+    pull_up = models.FloatField(blank=True, null=True)
+    squat = models.FloatField(blank=True, null=True)
+

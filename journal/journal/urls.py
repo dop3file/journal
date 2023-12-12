@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 
 from users.views import MainView, RegisterView, LoginView, _logout
-from profiles.views import ProfileView, FunctionalTableView, EditProfileView
+from profiles.views import ProfileView, FunctionalTableView, EditProfileView, PhysicalStandartsTable
 from admin_panel.views import AdminPanelView
 
 
@@ -31,5 +31,6 @@ urlpatterns = [
     path('logout/', _logout, name='logout'),
     path('panel/', AdminPanelView.as_view(), name='panel'),
     path('functional_table/', FunctionalTableView.as_view(), name='functional'),
-    path('edit_profile/', EditProfileView.as_view(), name='edit_profile')
+    path('edit_profile/', EditProfileView.as_view(), name='edit_profile'),
+    path('physicals_table/', PhysicalStandartsTable.as_view(), name='physicals')
 ]

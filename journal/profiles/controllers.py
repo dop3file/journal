@@ -102,10 +102,22 @@ class FunctionalTableControllers(PhysicalTableControllers):
         super().__init__(table_class, not_exists_fields)
 
 
+class PhysicalStandardsControllers(PhysicalTableControllers):
+    def __init__(self, table_class: Type[Model], not_exists_fields: Tuple[str]):
+        super().__init__(table_class, not_exists_fields)
+
+
 class ProfileControllers:
-    def __init__(self, anthropometric_table_controllers: AnthropometricTableControllers, functional_table_controllers: FunctionalTableControllers):
+    def __init__(
+            self,
+            anthropometric_table_controllers: AnthropometricTableControllers,
+            functional_table_controllers: FunctionalTableControllers,
+            physicals_standards: PhysicalStandardsControllers
+
+    ):
         self.anthropometric_table_controllers = anthropometric_table_controllers
         self.functional_table_controllers = functional_table_controllers
+        self.physicals_standards = physicals_standards
 
 
     def get_profile_context(self, user: CustomUser, request: HttpRequest) -> dict:
@@ -124,4 +136,7 @@ class ProfileControllers:
         context.update(self.anthropometric_table_controllers.calculate_indexes_physical_development(antropometric_data, user.get_age()))
         functional_data = self.functional_table_controllers.get_table(user)
         context.update(functional_data)
+        physicals_data = self.physicals_standards.get_table(user)
+        context.update(physicals_data)
+
         return context
