@@ -20,12 +20,13 @@ class MainView(TemplateView, View):
 
 class RegisterView(TemplateView, View):
     template_name = "register.html"
+    title = "Регистрация"
 
     def get(self, request, *args, **kwargs):
         form = RegisterForm()
         return self.render_to_response({
             "form": form,
-            "title": "Регистрация"
+            "title": self.title
         })
 
     def post(self, request, *args, **kwargs):
@@ -40,12 +41,13 @@ class RegisterView(TemplateView, View):
 
 class LoginView(TemplateView, View):
     template_name = "login.html"
+    title = "Вход"
 
     def get(self, request, *args, **kwargs):
         form = LoginForm()
         return self.render_to_response({
             "form": form,
-            "title": "Вход"
+            "title": self.title
         })
 
     def post(self, request, *args, **kwargs):
@@ -58,6 +60,6 @@ class LoginView(TemplateView, View):
         return redirect("main")
 
 
-def _logout(request):
+def logout_endpoint(request):
     logout(request)
     return redirect("main")

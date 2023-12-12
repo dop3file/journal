@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from users.views import MainView, RegisterView, LoginView, _logout
+from users.views import MainView, RegisterView, LoginView, logout_endpoint
 from profiles.views import ProfileView, FunctionalTableView, EditProfileView, PhysicalStandartsTable
 from admin_panel.views import AdminPanelView
 
@@ -28,7 +28,7 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),
     path('profile/<int:pk>/', ProfileView.as_view(), name='profile'),
-    path('logout/', _logout, name='logout'),
+    path('logout/', logout_endpoint, name='logout'),
     path('panel/', AdminPanelView.as_view(), name='panel'),
     path('functional_table/', FunctionalTableView.as_view(), name='functional'),
     path('edit_profile/', EditProfileView.as_view(), name='edit_profile'),
