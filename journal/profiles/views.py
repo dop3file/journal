@@ -20,13 +20,14 @@ profile_controllers = ProfileControllers(
     functional_table_controllers,
     physicals_standards
 )
+user_service = UserService()
 
 
 class ProfileView(TemplateView, View):
     template_name = "profile.html"
 
     def get(self, request: HttpRequest, *args, **kwargs):
-        profile_user = UserService.get(kwargs["pk"])
+        profile_user = user_service.get(kwargs["pk"])
         context = profile_controllers.get_profile_context(profile_user, request)
         return self.render_to_response(context)
 

@@ -61,7 +61,7 @@ function edit_functional_table(id) {
               "X-CSRFToken": getCookie("csrftoken")
          }
      })
-    location.reload(true);
+    location.replace(location.href);
 }
 
 function edit_physicals(id) {
@@ -91,7 +91,7 @@ function edit_physicals(id) {
               "X-CSRFToken": getCookie("csrftoken")
          }
      })
-    location.reload(true);
+    location.replace(location.href);
 }
 
 function colorize_functional_table() {

@@ -19,7 +19,7 @@ from django.urls import path
 
 from users.views import MainView, RegisterView, LoginView, logout_endpoint
 from profiles.views import ProfileView, FunctionalTableView, EditProfileView, PhysicalStandartsTable
-from admin_panel.views import AdminPanelView
+from admin_panel.views import AdminPanelView, StatisticsView
 
 
 urlpatterns = [
@@ -32,5 +32,6 @@ urlpatterns = [
     path('panel/', AdminPanelView.as_view(), name='panel'),
     path('functional_table/', FunctionalTableView.as_view(), name='functional'),
     path('edit_profile/', EditProfileView.as_view(), name='edit_profile'),
-    path('physicals_table/', PhysicalStandartsTable.as_view(), name='physicals')
+    path('physicals_table/', PhysicalStandartsTable.as_view(), name='physicals'),
+    path('statistics/', StatisticsView.as_view(), name='statistics')
 ]
