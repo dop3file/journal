@@ -8,6 +8,7 @@
  - Docker
  - Postgres
  - Dependency Injector
+ - Pydantic + Pydantic-Settings
 
 Change log:
 
