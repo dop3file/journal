@@ -12,6 +12,7 @@ psycopg2-binary = "^2.9.9"
 bokeh = "^3.3.4"
 xlsxwriter = "^3.2.0"
 pip-chill = "^1.0.3"
+django-sslserver = "^0.22"
 
 
 [build-system]

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-m!0sbg^+6v%9vqjzdcm1#cxe#4!@9u-2lr8&j)nj4gcdbfipam
 DEBUG = True
 
 # ALLOWED_HOSTS = ["gstudnevnik.pythonanywhere.com"]
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["developnya.ru"]
 
 
 # Application definition
@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'sslserver',
 
     'users',
     'profiles',
