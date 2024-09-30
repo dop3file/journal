@@ -25,6 +25,7 @@ SECRET_KEY = 'django-insecure-m!0sbg^+6v%9vqjzdcm1#cxe#4!@9u-2lr8&j)nj4gcdbfipam
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# ALLOWED_HOSTS = ["gstudnevnik.pythonanywhere.com"]
 ALLOWED_HOSTS = []
 
 
@@ -81,13 +82,18 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'journal',
-        'USER': 'root',
-        'PASSWORD': 'root',
+        'USER': 'myuser',
+        'PASSWORD': 'mypassword',
         'HOST': 'localhost',
-        'PORT': '55000',
+        'PORT': '5432',
     }
 }
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -143,3 +149,4 @@ ACCOUNT_USERNAME_REQUIRED = False
 
 COUNT_SEMESTER = 8
 FIRST_SEMESTER = 1
+COUNT_LESSONS = 32

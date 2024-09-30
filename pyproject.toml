@@ -9,6 +9,9 @@ readme = "README.md"
 python = "^3.12"
 django = "^4.2.7"
 psycopg2-binary = "^2.9.9"
+bokeh = "^3.3.4"
+xlsxwriter = "^3.2.0"
+pip-chill = "^1.0.3"
 
 
 [build-system]

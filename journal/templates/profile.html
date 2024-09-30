@@ -1,7 +1,6 @@
 {% load static %}
 {% include 'base.html' %}
 <body>
-<script src="{% static "scripts/index.js" %}"></script>
     {% include 'header.html' %}
     <main>
         <div class="container">
@@ -12,9 +11,26 @@
             <a href="{% url 'edit_profile' %}"><button type="button" class="btn btn-primary">Изменить</button></a>
             <br>
             <br>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-secondary active">
+                <input type="radio" name="options" id="option1" autocomplete="off" value="antrho"> Антропометрические данные
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" name="options" id="option2" autocomplete="off" value="func"> Функциональные пробы
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" name="options" id="option3" autocomplete="off" value="phys"> Физическая подготовленность
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" name="options" id="option4" autocomplete="off" value="dnevnik"> Дневник самоконтроля
+              </label>
+            </div>
+            <br>
+            <br>
         </div>
         <div class="container">
-            <div class="container table_ground">
+            <div class="container table_ground" id="table_group" style="display: none">
+              <div id="antrho" style="display: none">
                 <h2>Антропометрические данные</h2>
                 <table class="table table-dark w-75">
                   <thead>
@@ -109,7 +125,7 @@
                     <tr>
                       <th scope="col">Всеростовой</th>
                       {% for i in height_index %}
-                        <th scope="col"><div contenteditable id="height_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        <th scope="col"><div contenteditable id="height_idx_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
                       {% endfor %}
                     </tr>
                     <tr>
@@ -121,7 +137,7 @@
                     <tr>
                       <th scope="col">Силовой индекс</th>
                       {% for i in strength_index %}
-                        <th scope="col"><div contenteditable id="strength_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        <th scope="col"><div contenteditable id="strength_idx_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
                       {% endfor %}
                     </tr>
                     <tr>
@@ -174,116 +190,256 @@
                     </tr>
                   </tbody>
                 </table>
+                </div>
+                <div id="functional" style="display: none">
+                  <h2>Функциональные пробы</h2>
+                  <table class="table table-dark w-75">
+                    <thead>
+                      <tr>
+                        <th scope="col">Показатель</th>
+                        <th scope="col">1 сем</th>
+                        <th scope="col">2 сем</th>
+                        <th scope="col">3 сем</th>
+                        <th scope="col">4 сем</th>
+                        <th scope="col">5 сем</th>
+                        <th scope="col">6 сем</th>
+                        <th scope="col">7 сем</th>
+                        <th scope="col">8 сем</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="col">Проба Генчи</th>
+                        {% for i in genchi %}
+                          <th scope="col"><div contenteditable id="genchi_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        <th scope="col">Проба Штанге</th>
+                        {% for i in shtange %}
+                          <th scope="col"><div contenteditable id="shtange_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        <th scope="col">Функциональная проба ССС</th>
+                        {% for i in functional_ccc %}
+                          <th scope="col"><div contenteditable id="functional_ccc_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        <th scope="col">Ортостатическая проба</th>
+                        {% for i in orthostatic %}
+                          <th scope="col"><div contenteditable id="orthostatic_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        {% endfor %}
+                      </tr>
+                    </tbody>
+                  </table>
+                 {% if is_own %}
+                    <button type="button" class="btn btn-success" onclick="edit_functional_table('{{ profile_user.id }}')">Сохранить</button>
+                  {% endif %}
+                </div>
+                <div id="phys" style="display: none">
+                  <h2>Физическая подготовленность</h2>
+                  <table class="table table-dark w-75">
+                    <thead>
+                      <tr>
+                        <th scope="col">Норматив</th>
+                        <th scope="col">1 сем</th>
+                        <th scope="col">2 сем</th>
+                        <th scope="col">3 сем</th>
+                        <th scope="col">4 сем</th>
+                        <th scope="col">5 сем</th>
+                        <th scope="col">6 сем</th>
+                        <th scope="col">7 сем</th>
+                        <th scope="col">8 сем</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="col">Бег, 6 мин, м</th>
+                        {% for i in run %}
+                          <th scope="col"><div contenteditable id="run_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        <th scope="col">Наклон из положения сидя, раз</th>
+                        {% for i in incline %}
+                          <th scope="col"><div contenteditable id="incline_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        <th scope="col">Сгибание и разгибание рук в упоре от скамейки(из упора лежа), раз</th>
+                        {% for i in bending %}
+                          <th scope="col"><div contenteditable id="bending_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        <th scope="col">Поднимание туловища из положения лежа на спине, раз</th>
+                        {% for i in raising %}
+                          <th scope="col"><div contenteditable id="raising_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        <th scope="col">Подтягивание, раз</th>
+                        {% for i in pull_up %}
+                          <th scope="col"><div contenteditable id="pull_up_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        <th scope="col">Приседание, раз</th>
+                        {% for i in squat %}
+                          <th scope="col"><div contenteditable id="squat_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        {% endfor %}
+                      </tr>
+                    </tbody>
+                  </table>
+                 {% if is_own %}
+                    <button type="button" class="btn btn-success" onclick="edit_physicals('{{ profile_user.id }}')">Сохранить</button>
+                  {% endif %}
+              </div>
+              <div id="dnevik" style="display: none">
+                  <h2>Тест САН</h2>
+                  <h4>Выставляйте оценки от 1 до 5, где 5 это все отлично</h4>
+                  <table class="table table-dark w-75">
+                    <thead>
+                      <tr>
+                        <th scope="col">Показатель</th>
+                        <th scope="col">1</th>
+                        <th scope="col">2</th>
+                        <th scope="col">3</th>
+                        <th scope="col">4</th>
+                        <th scope="col">5</th>
+                        <th scope="col">6</th>
+                        <th scope="col">7</th>
+                        <th scope="col">8</th>
+                        <th scope="col">9</th>
+                        <th scope="col">10</th>
+                        <th scope="col">11</th>
+                        <th scope="col">12</th>
+                        <th scope="col">13</th>
+                        <th scope="col">14</th>
+                        <th scope="col">15</th>
+                        <th scope="col">16</th>
+                        <th scope="col">17</th>
+                        <th scope="col">18</th>
+                        <th scope="col">19</th>
+                        <th scope="col">20</th>
+                        <th scope="col">21</th>
+                        <th scope="col">22</th>
+                        <th scope="col">23</th>
+                        <th scope="col">24</th>
+                        <th scope="col">25</th>
+                        <th scope="col">26</th>
+                        <th scope="col">27</th>
+                        <th scope="col">28</th>
+                        <th scope="col">29</th>
+                        <th scope="col">30</th>
+                        <th scope="col">31</th>
+                        <th scope="col">32</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="col">Сон</th>
+                        {% for i in sleep %}
+                          <th scope="col"><div contenteditable id="sleep_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        <th scope="col">Самочувствие</th>
+                        {% for i in health %}
+                          <th scope="col"><div contenteditable id="health_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        <th scope="col">Аппетит</th>
+                        {% for i in appetite %}
+                          <th scope="col"><div contenteditable id="appetite_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        <th scope="col">Болевые ощущения</th>
+                        {% for i in pain %}
+                          <th scope="col"><div contenteditable id="pain_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        <th scope="col">Переносимость нагрузки</th>
+                        {% for i in overload %}
+                          <th scope="col"><div contenteditable id="overload_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        <th scope="col">Работоспособность</th>
+                        {% for i in perfomance %}
+                          <th scope="col"><div contenteditable id="perfomance_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        <th scope="col">Отношения к нагрузкам</th>
+                        {% for i in loads_attitude %}
+                          <th scope="col"><div contenteditable id="loads_attitude_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        <th scope="col">Средняя сумма баллов</th>
+                        {% for i in health_result %}
+                          <th scope="col"><div id="healthresult_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
+                        {% endfor %}
+                      </tr>
 
-                <h2>Функциональные пробы</h2>
-                <table class="table table-dark w-75">
-                  <thead>
-                    <tr>
-                      <th scope="col">Показатель</th>
-                      <th scope="col">1 сем</th>
-                      <th scope="col">2 сем</th>
-                      <th scope="col">3 сем</th>
-                      <th scope="col">4 сем</th>
-                      <th scope="col">5 сем</th>
-                      <th scope="col">6 сем</th>
-                      <th scope="col">7 сем</th>
-                      <th scope="col">8 сем</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="col">Проба Генчи</th>
-                      {% for i in genchi %}
-                        <th scope="col"><div contenteditable id="genchi_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
-                      {% endfor %}
-                    </tr>
-                    <tr>
-                      <th scope="col">Проба Штанге</th>
-                      {% for i in shtange %}
-                        <th scope="col"><div contenteditable id="shtange_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
-                      {% endfor %}
-                    </tr>
-                    <tr>
-                      <th scope="col">Функциональная проба ССС</th>
-                      {% for i in functional_ccc %}
-                        <th scope="col"><div contenteditable id="functional_ccc_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
-                      {% endfor %}
-                    </tr>
-                    <tr>
-                      <th scope="col">Ортостатическая проба</th>
-                      {% for i in orthostatic %}
-                        <th scope="col"><div contenteditable id="orthostatic_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
-                      {% endfor %}
-                    </tr>
-                  </tbody>
-                </table>
-               {% if is_own %}
-                  <button type="button" class="btn btn-success" onclick="edit_functional_table('{{ profile_user.id }}')">Сохранить</button>
-                {% endif %}
-                <h2>Физическая подготовленность</h2>
-                <table class="table table-dark w-75">
-                  <thead>
-                    <tr>
-                      <th scope="col">Норматив</th>
-                      <th scope="col">1 сем</th>
-                      <th scope="col">2 сем</th>
-                      <th scope="col">3 сем</th>
-                      <th scope="col">4 сем</th>
-                      <th scope="col">5 сем</th>
-                      <th scope="col">6 сем</th>
-                      <th scope="col">7 сем</th>
-                      <th scope="col">8 сем</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="col">Бег, 6 мин, м</th>
-                      {% for i in run %}
-                        <th scope="col"><div contenteditable id="run_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
-                      {% endfor %}
-                    </tr>
-                    <tr>
-                      <th scope="col">Наклон из положения сидя, раз</th>
-                      {% for i in incline %}
-                        <th scope="col"><div contenteditable id="incline_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
-                      {% endfor %}
-                    </tr>
-                    <tr>
-                      <th scope="col">Сгибание и разгибание рук в упоре от скамейки(из упора лежа), раз</th>
-                      {% for i in bending %}
-                        <th scope="col"><div contenteditable id="bending_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
-                      {% endfor %}
-                    </tr>
-                    <tr>
-                      <th scope="col">Поднимание туловища из положения лежа на спине, раз</th>
-                      {% for i in raising %}
-                        <th scope="col"><div contenteditable id="raising_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
-                      {% endfor %}
-                    </tr>
-                    <tr>
-                      <th scope="col">Подтягивание, раз</th>
-                      {% for i in pull_up %}
-                        <th scope="col"><div contenteditable id="pull_up_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
-                      {% endfor %}
-                    </tr>
-                    <tr>
-                      <th scope="col">Приседание, раз</th>
-                      {% for i in squat %}
-                        <th scope="col"><div contenteditable id="squat_{{ forloop.counter }}">{% if i %}{{ i }}{% else %}{% endif %}</div></th>
-                      {% endfor %}
-                    </tr>
-                  </tbody>
-                </table>
-               {% if is_own %}
-                  <button type="button" class="btn btn-success" onclick="edit_physicals('{{ profile_user.id }}')">Сохранить</button>
-                {% endif %}
-            </div>
+                    </tbody>
+                  </table>
+                 {% if is_own %}
+                    <button type="button" class="btn btn-success" onclick="edit_health('{{ profile_user.id }}')">Сохранить</button>
+                  {% endif %}
+              </div>
+              </div>
         </div>
 
         </div>
     </main>
+  <script src="{% static "scripts/index.js" %}"></script>
   <script>
       colorize_functional_table()
+      colorize_index_table("{{ profile_user.gender }}")
+      var radioButtons = document.querySelectorAll('input[name="options"]');
+
+      // Добавляем обработчик события change для каждой радиокнопки
+      radioButtons.forEach(function(radioButton) {
+        radioButton.addEventListener('change', function() {
+          // Получаем значение выбранной радиокнопки
+          var selectedColor = this.value;
+          var table_group = document.getElementById("table_group")
+          table_group.style.display = "block"
+          var anthro = document.getElementById("antrho")
+          var func = document.getElementById("functional")
+          var phys = document.getElementById("phys")
+          var dnevnik = document.getElementById("dnevik")
+          anthro.style.display = "none"
+          func.style.display = "none"
+          phys.style.display = "none"
+          dnevnik.style.display = "none"
+          // Выполняем нужные действия в зависимости от выбранного значения
+          switch (selectedColor) {
+            case 'antrho':
+              anthro.style.display = "block"
+              break;
+            case 'func':
+              func.style.display = "block"
+              break;
+            case 'phys':
+              phys.style.display = "block"
+              break;
+            case 'dnevnik':
+              dnevnik.style.display = "block";
+              break;
+            default:
+              // Действия по умолчанию
+              console.log('Выбран неизвестный цвет');
+          }
+        });
+});
   </script>
 </body>
 </html>
