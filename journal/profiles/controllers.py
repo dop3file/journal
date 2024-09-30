@@ -1,12 +1,15 @@
 import math
 from copy import deepcopy
-from typing import Type, Tuple
+from typing import Type, Tuple, Any
 
+import django.core.exceptions
 from django.db.models import Model
 from django.http import HttpRequest
 
 from journal import settings
+from journal.settings import COUNT_LESSONS
 from .models import Anthropometric, Functional
+from users.models import StudentGroup
 from users.models import CustomUser
 
 
@@ -16,7 +19,7 @@ class PhysicalTableControllers:
         self.fields: list[str] = [field.name for field in table_class._meta.fields if field.name not in not_exists_fields]
         self.count_semester = settings.COUNT_SEMESTER
 
-    def get_table(self, user: CustomUser) -> dict[str, list[Model]]:
+    def get_table(self, user: CustomUser) -> dict[str, list[float]]:
         result = {
             field: [] for field in self.fields
         }
@@ -107,18 +110,55 @@ class PhysicalStandardsControllers(PhysicalTableControllers):
         super().__init__(table_class, not_exists_fields)
 
 
+class HealthControllers(PhysicalTableControllers):
+    def __init__(self, table_class: Type[Model], not_exists_fields: Tuple[str]):
+        super().__init__(table_class, not_exists_fields)
+
+    def get_table(self, user: CustomUser) -> dict[str, list[float]]:
+        result = {
+            field: [] for field in self.fields
+        }
+        result["health_result"] = [0 for _ in range(1, COUNT_LESSONS + 1)]
+        for field in self.fields:
+            for lesson in range(1, COUNT_LESSONS + 1):
+                result[field].append(
+                    getattr(self.table_class.objects.filter(user=user, lesson_number=lesson).first(), field)
+                )
+                result["health_result"][lesson - 1] += result[field][-1] if result[field][-1] else 0
+        for lesson in range(1, COUNT_LESSONS + 1):
+            result["health_result"][lesson - 10] = round(result["health_result"][lesson - 10] / 7, 2)
+        return result
+
+    def update_table(self, table_data: dict, user: CustomUser):
+        for parameter, lesson_list in table_data["data"].items():
+            for lesson, value in enumerate(lesson_list):
+                try:
+                    if value:
+                        try:
+                            value = int(value)
+                            if value > 5 or value < 1:
+                                raise ValueError
+                        except ValueError:
+                            return
+                        record = self.table_class.objects.filter(user=user, lesson_number=lesson + 1).first()
+                        setattr(record, parameter, value if value else None)
+                        record.save()
+                except django.core.exceptions.FieldError:
+                    ...
+
+
 class ProfileControllers:
     def __init__(
             self,
             anthropometric_table_controllers: AnthropometricTableControllers,
             functional_table_controllers: FunctionalTableControllers,
-            physicals_standards: PhysicalStandardsControllers
-
+            physicals_standards: PhysicalStandardsControllers,
+            health_controllers: HealthControllers
     ):
         self.anthropometric_table_controllers = anthropometric_table_controllers
         self.functional_table_controllers = functional_table_controllers
         self.physicals_standards = physicals_standards
-
+        self.health_controllers = health_controllers
 
     def get_profile_context(self, user: CustomUser, request: HttpRequest) -> dict:
         context = {
@@ -138,5 +178,7 @@ class ProfileControllers:
         context.update(functional_data)
         physicals_data = self.physicals_standards.get_table(user)
         context.update(physicals_data)
+        health = self.health_controllers.get_table(user)
+        context.update(health)
 
         return context

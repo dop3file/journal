@@ -66,9 +66,9 @@ class RegisterForm(UserCreationForm):
             except KeyError:
                 ...
         user.username = user.email
-        generate_physical_tables(user)
         if commit:
             user.save()
+        generate_physical_tables(user)
         return user
 
     class Meta:

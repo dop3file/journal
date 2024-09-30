@@ -38,3 +38,15 @@ class PhysicalStandards(models.Model):
     pull_up = models.FloatField(blank=True, null=True)
     squat = models.FloatField(blank=True, null=True)
 
+
+class Health(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    lesson_number = models.IntegerField(blank=True, null=True)
+    sleep = models.IntegerField(blank=True, null=True)
+    health = models.IntegerField(blank=True, null=True)
+    appetite = models.IntegerField(blank=True, null=True)
+    pain = models.IntegerField(blank=True, null=True)
+    overload = models.IntegerField(blank=True, null=True)
+    perfomance = models.IntegerField(blank=True, null=True)
+    loads_attitude = models.IntegerField(blank=True, null=True)
+

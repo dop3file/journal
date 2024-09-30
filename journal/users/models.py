@@ -3,6 +3,12 @@ import datetime
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+
+
+class Gender(models.TextChoices):
+    MALE = 'male', _('male')
+    WOOMAN = 'wooman', _('wooman')
 
 
 class StudentGroup(models.Model):
@@ -15,11 +21,11 @@ class StudentGroup(models.Model):
 class CustomUser(AbstractUser):
     first_name = models.CharField(max_length=256, blank=True, verbose_name="Имя")
     last_name = models.CharField(max_length=256, blank=True, verbose_name="Фамилия")
-    group = models.ForeignKey(StudentGroup, on_delete=models.CASCADE)
-    birth_year = models.IntegerField()
-    join_year = models.IntegerField()
+    group = models.ForeignKey(StudentGroup, on_delete=models.CASCADE, null=True)
+    birth_year = models.IntegerField(default=None, null=True)
+    join_year = models.IntegerField(default=None, null=True)
     email = models.EmailField(unique=True)
-    gender = models.CharField(default="male")
+    gender = models.CharField(max_length=128, default="male")
 
     def __str__(self):
         return f"{self.last_name} {self.first_name}"

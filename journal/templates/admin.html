@@ -13,6 +13,7 @@
             <br>
             <button type="submit" class="btn btn-primary">Поиск</button>
             {% if profile_user %}
+                <br><br>
                 <main>
                     <div class="container">
                         <h1>{{ profile_user.last_name }} {{ profile_user.first_name }}, {{ profile_user.group.title }}</h1>

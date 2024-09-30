@@ -1,0 +1,26 @@
+version: '3'
+services:
+  web:
+    build:
+      context: journal
+    ports:
+      - '8000:8000'
+    networks:
+      - journal
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: journal
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - journal
+
+networks:
+  journal:
+    driver: bridge

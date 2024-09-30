@@ -1,7 +1,7 @@
-from profiles.models import Anthropometric, Functional, PhysicalStandards
+from profiles.models import Anthropometric, Functional, PhysicalStandards, Health
 from .models import CustomUser
 
-from journal.settings import FIRST_SEMESTER, COUNT_SEMESTER
+from journal.settings import FIRST_SEMESTER, COUNT_SEMESTER, COUNT_LESSONS
 
 
 def generate_physical_tables(user: CustomUser) -> None:
@@ -12,3 +12,6 @@ def generate_physical_tables(user: CustomUser) -> None:
         functional_record.save()
         physical_record = PhysicalStandards(user=user, semester=semester)
         physical_record.save()
+    for lesson in range(1, COUNT_LESSONS + 1):
+        health = Health(user=user, lesson_number=lesson)
+        health.save()
