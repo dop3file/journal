@@ -26,8 +26,8 @@ class PhysicalTableControllers:
         for field in self.fields:
             for semester in range(1, self.count_semester + 1):
                 result[field].append(
-                    getattr(self.table_class.objects.filter(user=user, semester=semester).first(), field))
-
+                    getattr(self.table_class.objects.filter(user=user, semester=semester).first(), field)
+                )
         return result
 
     def update_table(self, table_data: dict, user: CustomUser):
@@ -89,14 +89,15 @@ class AnthropometricTableControllers(PhysicalTableControllers):
             "robinson_index": ("chs", "ads"),
             "weight_index": ("weight", "height")
         }
+
         for key in result:
             for semester in range(1, self.count_semester + 1):
                 try:
                     parameters = (anthropometric_data[parameter][semester - 1] for parameter in needs_parameters[key])
                     result[key].append(round(formulas[key](*parameters), 2))
-                except Exception:
-                    result[key].append(None)
-
+                except Exception as e:
+                    result[key].append(0)
+        print(result)
         return result
 
 

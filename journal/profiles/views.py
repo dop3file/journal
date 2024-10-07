@@ -31,7 +31,6 @@ class ProfileView(TemplateView, View):
     def get(self, request: HttpRequest, *args, **kwargs):
         profile_user = user_service.get(kwargs["pk"])
         context = profile_controllers.get_profile_context(profile_user, request)
-        print()
         return self.render_to_response(context)
 
     def post(self, request: HttpRequest, *args, **kwargs):

@@ -1,3 +1,5 @@
+URL = "http://127.0.0.1:8000"
+
 function getCookie(name) {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
@@ -7,7 +9,7 @@ function getCookie(name) {
 function edit_table(id) {
     data = {
         height: [],
-        weight: [],
+        weig    ht: [],
         vital_capacity: [],
         strength: [],
         right_hand_strength: [],
@@ -27,7 +29,7 @@ function edit_table(id) {
         data.ads.push(document.getElementById(`ads_${i}`).innerText)
         data.add.push(document.getElementById(`add_${i}`).innerText)
     }
-     fetch(`http://127.0.0.1:8000/profile/${id}/`, {
+     fetch(`${URL}/profile/${id}/`, {
           method: "POST",
           body: JSON.stringify({
             data
@@ -52,7 +54,7 @@ function edit_functional_table(id) {
         data.functional_ccc.push(document.getElementById(`functional_ccc_${i}`).innerText)
         data.orthostatic.push(document.getElementById(`orthostatic_${i}`).innerText)
     }
-     fetch(`http://127.0.0.1:8000/functional_table/`, {
+     fetch(`${URL}/functional_table/`, {
           method: "POST",
           body: JSON.stringify({
             data
@@ -82,7 +84,7 @@ function edit_physicals(id) {
         data.pull_up.push(document.getElementById(`pull_up_${i}`).innerText)
         data.squat.push(document.getElementById(`squat_${i}`).innerText)
     }
-     fetch(`http://127.0.0.1:8000/physicals_table/`, {
+     fetch(`${URL}/physicals_table/`, {
           method: "POST",
           body: JSON.stringify({
             data
@@ -115,7 +117,7 @@ function edit_health(id) {
         data.loads_attitude.push(document.getElementById(`loads_attitude_${i}`).innerText)
         data.health_result.push(document.getElementById(`healthresult_${i}`).innerText)
     }
-     fetch(`http://127.0.0.1:8000/health/`, {
+     fetch(`${URL}/health/`, {
           method: "POST",
           body: JSON.stringify({
             data

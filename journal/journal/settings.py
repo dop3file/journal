@@ -9,8 +9,8 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
 from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-m!0sbg^+6v%9vqjzdcm1#cxe#4!@9u-2lr8&j)nj4gcdbfipam
 DEBUG = True
 
 # ALLOWED_HOSTS = ["gstudnevnik.pythonanywhere.com"]
-ALLOWED_HOSTS = ["developnya.ru"]
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 
 # Application definition
@@ -118,9 +118,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
-STATICFILES_DIRS = [
-    BASE_DIR / "static"
-]
 
 LANGUAGE_CODE = 'en-us'
 
@@ -134,9 +131,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-
-STATIC_ROOT = ""
+STATIC_ROOT = BASE_DIR / "static"
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
